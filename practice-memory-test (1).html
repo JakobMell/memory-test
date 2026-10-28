@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Practice memory and thinking test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #FAFBF8;
+  --surface: #FFFFFF;
+  --ink: #1D2A2B;
+  --muted: #5B6966;
+  --line: #D3DCD6;
+  --gum: #2F6552;
+  --gum-soft: #E3EEE8;
+  --wattle: #E6B23A;
+  --wattle-soft: #FBF1D6;
+  --on-gum: #FFFFFF;
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #141B1A; --surface: #1C2524; --ink: #E7EEEA; --muted: #A2B1AC;
+    --line: #34423F; --gum: #7DC1A6; --gum-soft: #23362F; --wattle: #F0C35A;
+    --wattle-soft: #3A3220; --on-gum: #10201A; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #141B1A; --surface: #1C2524; --ink: #E7EEEA; --muted: #A2B1AC;
+  --line: #34423F; --gum: #7DC1A6; --gum-soft: #23362F; --wattle: #F0C35A;
+  --wattle-soft: #3A3220; --on-gum: #10201A; color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: "Atkinson Hyperlegible", "Verdana", "Segoe UI", system-ui, sans-serif;
+  font-size: 1.125rem; line-height: 1.55;
+}
+main { max-width: 44rem; margin: 0 auto; padding: 2rem 1.25rem 8rem; }
+header h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); line-height: 1.1; margin: 0 0 .6rem; letter-spacing: -0.01em; }
+header p { margin: 0 0 1rem; color: var(--muted); max-width: 36rem; }
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin: 1.25rem 0 .5rem; }
+button { font: inherit; cursor: pointer; }
+.primary {
+  background: var(--gum); color: var(--on-gum); border: 0; border-radius: .6rem;
+  padding: .8rem 1.3rem; font-weight: 700;
+}
+.ghost {
+  background: transparent; color: var(--gum); border: 2px solid var(--gum); border-radius: .6rem;
+  padding: .65rem 1.1rem; font-weight: 700;
+}
+button:focus-visible { outline: 3px solid var(--wattle); outline-offset: 3px; }
+.exam-id { color: var(--muted); font-size: 1rem; }
+.note {
+  background: var(--wattle-soft); border-left: 5px solid var(--wattle);
+  padding: .9rem 1.1rem; border-radius: 0 .5rem .5rem 0; margin: 1.5rem 0 2rem; font-size: 1rem;
+}
+section.item { border-top: 2px solid var(--line); padding: 1.6rem 0 1.4rem; }
+.item h2 { display: flex; align-items: baseline; gap: .75rem; font-size: 1.35rem; margin: 0 0 .75rem; }
+.num {
+  flex: none; display: inline-grid; place-items: center; width: 2.1rem; height: 2.1rem;
+  border-radius: 50%; background: var(--gum-soft); color: var(--gum); font-size: 1.05rem;
+}
+.pts { margin-left: auto; color: var(--muted); font-size: 1rem; font-weight: 400; white-space: nowrap; }
+.say { font-size: 1.25rem; margin: .4rem 0 .9rem; padding-left: 1rem; border-left: 4px solid var(--gum); }
+.hint { color: var(--muted); font-size: 1rem; margin: .3rem 0 .8rem; }
+.big-words { font-size: 1.6rem; font-weight: 700; letter-spacing: .02em; }
+.toggles { display: flex; flex-wrap: wrap; gap: .55rem; }
+.pt {
+  min-height: 3rem; padding: .5rem .95rem; border-radius: 2rem; border: 2px solid var(--line);
+  background: var(--surface); color: var(--ink); text-align: left; line-height: 1.25;
+}
+.pt small { display: block; color: var(--muted); font-size: .85rem; }
+.pt[aria-pressed="true"] { background: var(--gum); border-color: var(--gum); color: var(--on-gum); }
+.pt[aria-pressed="true"] small { color: var(--on-gum); opacity: .85; }
+.pt[aria-pressed="true"]::before { content: "✓ "; font-weight: 700; }
+.alt { margin-top: 1rem; font-size: 1rem; color: var(--muted); }
+.shape-box { color: var(--ink); max-width: 15rem; margin: .5rem 0 1rem; }
+.shape-box svg { width: 100%; height: auto; display: block; }
+.scorebar {
+  position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface);
+  border-top: 2px solid var(--line);
+  padding: .8rem 1.25rem calc(.8rem + env(safe-area-inset-bottom, 0px));
+}
+.scorebar-inner { max-width: 44rem; margin: 0 auto; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.total { font-size: 1.5rem; font-weight: 700; }
+.total span { color: var(--muted); font-weight: 400; font-size: 1.1rem; }
+.scorebar .primary { margin-left: auto; }
+#result { display: none; margin-top: 2rem; padding: 1.4rem; border-radius: .8rem; background: var(--gum-soft); }
+#result h2 { margin: 0 0 .5rem; font-size: 1.5rem; }
+#result p { margin: .5rem 0; }
+/* Large card overlay */
+.overlay {
+  position: fixed; inset: 0; z-index: 20; background: var(--surface); color: var(--ink);
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  padding: calc(2rem + env(safe-area-inset-top, 0px)) 1.5rem calc(2rem + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+}
+.overlay.open { display: flex; }
+.overlay .card-text { font-size: clamp(3rem, 12vw, 7rem); font-weight: 700; line-height: 1.05; max-width: 14ch; }
+.overlay .card-shape { width: min(80vw, 28rem); }
+.overlay .card-shape svg { width: 100%; height: auto; }
+.overlay .close { position: absolute; top: calc(1rem + env(safe-area-inset-top, 0px)); right: 1rem; }
+.overlay .tip { margin-top: 2rem; color: var(--muted); font-size: 1rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .pt { transition: background-color .15s, border-color .15s; }
+}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Practice memory and thinking test</h1>
+    <p>A practice version in the style of the screening tests GPs use for driving medicals. Each new exam picks different words, sentences and shapes. You read the instructions aloud and tap the points earned.</p>
+    <div class="actions">
+      <button class="primary" id="newExam">Make a new exam</button>
+      <button class="ghost" id="reset">Clear scores</button>
+      <span class="exam-id" id="examId"></span>
+    </div>
+  </header>
+
+  <div class="note">This is for practice only, not a real assessment. The doctor will use different words, so aim to get comfortable with the kinds of tasks rather than memorising answers.</div>
+
+  <div id="exam"></div>
+
+  <div id="result" aria-live="polite"></div>
+</main>
+
+<div class="scorebar">
+  <div class="scorebar-inner">
+    <div class="total" id="total">0 <span>/ 30</span></div>
+    <button class="primary" id="showResult">See result</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Large card">
+  <button class="ghost close" id="closeOverlay">Close</button>
+  <div id="overlayContent"></div>
+  <p class="tip">Show this screen to the person doing the test.</p>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Pools ----------
+  var wordsA = ["River", "Garden", "Mountain", "Beach", "Forest", "Island", "Paddock", "Harbour", "Valley", "Desert"];
+  var wordsB = ["Pencil", "Bucket", "Hammer", "Kettle", "Ladder", "Basket", "Candle", "Mirror", "Wallet", "Bottle"];
+  var wordsC = ["Violin", "Blanket", "Parrot", "Lemon", "Saddle", "Trumpet", "Carrot", "Jacket", "Pumpkin", "Tiger"];
+  var spellWords = ["CHAIR", "HOUSE", "PLANT", "BREAD", "TRAIN", "STONE", "CLOUD", "MOUSE", "GLOVE", "BRUSH", "CANDY", "FROST"];
+  var objects = ["key", "spoon", "watch", "pen", "cup", "comb", "coin", "pair of glasses", "book", "TV remote", "button", "fork"];
+  var sentences = [
+    "The red bus stopped by the old church.",
+    "My neighbour planted roses near the gate.",
+    "The little dog barked at the postman.",
+    "We ate fish and chips down at the jetty.",
+    "Grandma keeps the biscuits in a blue tin.",
+    "The farmer fixed the fence before the rain.",
+    "A kookaburra sat on the back fence.",
+    "The train was late again on Tuesday.",
+    "She left her umbrella at the bakery.",
+    "The boys painted the shed bright green."
+  ];
+  var endings = ["put it on the table", "hand it back to me", "put it on your lap", "put it down beside you"];
+  var readCards = ["RAISE YOUR HAND", "TOUCH YOUR NOSE", "CLAP YOUR HANDS", "NOD YOUR HEAD", "TOUCH YOUR EAR", "TAP THE TABLE", "SMILE"];
+  var starts = [100, 100, 100, 95, 90, 85];
+
+  // ---------- Helpers ----------
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function shuffle(a) {
+    var b = a.slice();
+    for (var i = b.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = b[i]; b[i] = b[j]; b[j] = t; }
+    return b;
+  }
+  function pickN(a, n) { return shuffle(a).slice(0, n); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  function polygon(cx, cy, r, sides, rot) {
+    var pts = [];
+    for (var i = 0; i < sides; i++) {
+      var a = rot + (i * 2 * Math.PI) / sides;
+      pts.push((cx + r * Math.cos(a)).toFixed(1) + "," + (cy + r * Math.sin(a)).toFixed(1));
+    }
+    return pts.join(" ");
+  }
+  var stroke = 'fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"';
+  var shapes = [
+    { name: "two overlapping five-sided shapes", svg: function () {
+      return '<polygon ' + stroke + ' points="' + polygon(80, 100, 58, 5, -Math.PI / 2) + '"/>' +
+             '<polygon ' + stroke + ' points="' + polygon(160, 100, 58, 5, -Math.PI / 2 + 0.35) + '"/>'; } },
+    { name: "two overlapping circles", svg: function () {
+      return '<circle ' + stroke + ' cx="90" cy="100" r="60"/><circle ' + stroke + ' cx="150" cy="100" r="60"/>'; } },
+    { name: "a square overlapping a diamond", svg: function () {
+      return '<rect ' + stroke + ' x="35" y="50" width="100" height="100"/>' +
+             '<polygon ' + stroke + ' points="' + polygon(160, 100, 64, 4, 0) + '"/>'; } },
+    { name: "a triangle overlapping a square", svg: function () {
+      return '<rect ' + stroke + ' x="40" y="60" width="100" height="100"/>' +
+             '<polygon ' + stroke + ' points="' + polygon(165, 110, 66, 3, -Math.PI / 2) + '"/>'; } },
+    { name: "two overlapping six-sided shapes", svg: function () {
+      return '<polygon ' + stroke + ' points="' + polygon(85, 100, 58, 6, 0) + '"/>' +
+             '<polygon ' + stroke + ' points="' + polygon(160, 100, 58, 6, 0) + '"/>'; } }
+  ];
+  function svgWrap(inner) { return '<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Shape to copy">' + inner + '</svg>'; }
+
+  // Southern hemisphere seasons (Perth)
+  function seasonFor(m) {
+    if (m === 11 || m <= 1) return "Summer";
+    if (m <= 4) return "Autumn";
+    if (m <= 7) return "Winter";
+    return "Spring";
+  }
+
+  // ---------- Build exam ----------
+  var current = null;
+
+  function makeExam() {
+    var now = new Date();
+    var start = pick(starts);
+    var serial = [];
+    for (var i = 1; i <= 5; i++) serial.push(start - 7 * i);
+    var hand = pick(["left", "right"]);
+    var words = shuffle([pick(wordsA), pick(wordsB), pick(wordsC)]);
+    var spell = pick(spellWords);
+    return {
+      id: Math.floor(1000 + Math.random() * 9000),
+      year: now.getFullYear(),
+      season: seasonFor(now.getMonth()),
+      month: now.toLocaleDateString("en-AU", { month: "long" }),
+      date: now.getDate(),
+      weekday: now.toLocaleDateString("en-AU", { weekday: "long" }),
+      words: words,
+      start: start,
+      serial: serial,
+      spell: spell,
+      spellBack: spell.split("").reverse().join("-"),
+      objects: pickN(objects, 2),
+      sentence: pick(sentences),
+      hand: hand,
+      ending: pick(endings),
+      card: pick(readCards),
+      shape: pick(shapes)
+    };
+  }
+
+  function toggles(list) {
+    return '<div class="toggles">' + list.map(function (t) {
+      return '<button class="pt" aria-pressed="false">' + esc(t[0]) + (t[1] ? '<small>' + esc(t[1]) + '</small>' : '') + '</button>';
+    }).join("") + '</div>';
+  }
+
+  function section(n, title, pts, body) {
+    return '<section class="item"><h2><span class="num">' + n + '</span>' + esc(title) +
+      '<span class="pts">' + pts + (pts === 1 ? ' point' : ' points') + '</span></h2>' + body + '</section>';
+  }
+
+  function render(e) {
+    var html = "";
+    html += section(1, "Orientation to time", 5,
+      '<p class="say">“What is the year? The season? The month? Today’s date? And what day of the week is it?”</p>' +
+      toggles([["Year", e.year], ["Season", e.season], ["Month", e.month], ["Date", e.date], ["Day", e.weekday]]));
+
+    html += section(2, "Orientation to place", 5,
+      '<p class="say">“What country are we in? What state? What suburb or town? What is this building called? Which room or floor are we in?”</p>' +
+      toggles([["Country", "Australia"], ["State", "Western Australia"], ["Suburb or town", "Where you are now"], ["Building", "e.g. home, the clinic"], ["Room or floor", "Where you are now"]]));
+
+    html += section(3, "Remembering three words", 3,
+      '<p class="say">“I’m going to say three words. Say them back to me, and try to remember them because I’ll ask again later.”</p>' +
+      '<p class="big-words">' + e.words.map(esc).join(", ") + '</p>' +
+      '<p class="hint">Say them slowly, about one per second. Score only the first attempt, then repeat until all three are learned (up to 5 tries).</p>' +
+      toggles(e.words.map(function (w) { return [w]; })));
+
+    html += section(4, "Attention and calculation", 5,
+      '<p class="say">“Start at ' + e.start + ' and keep taking away 7. Keep going until I say stop.”</p>' +
+      '<p class="hint">Stop after five answers. Give a point for each answer that is 7 less than the one before, even if an earlier one was wrong.</p>' +
+      toggles(e.serial.map(function (v, i) { return ["Answer " + (i + 1), String(v)]; })) +
+      '<p class="alt">If subtracting is too hard, use this instead and score one point per letter in the right position: “Spell the word <strong>' + e.spell + '</strong> backwards.” Answer: ' + e.spellBack + '</p>');
+
+    html += section(5, "Recalling the three words", 3,
+      '<p class="say">“What were the three words I asked you to remember?”</p>' +
+      '<p class="hint">Don’t give any hints.</p>' +
+      toggles(e.words.map(function (w) { return [w]; })));
+
+    html += section(6, "Naming objects", 2,
+      '<p class="say">Hold up each object and ask: “What is this called?”</p>' +
+      '<p class="hint">Grab these from around the house beforehand.</p>' +
+      toggles(e.objects.map(function (o) { return [o.charAt(0).toUpperCase() + o.slice(1)]; })));
+
+    html += section(7, "Repeating a sentence", 1,
+      '<p class="say">“Repeat this sentence exactly: <em>' + esc(e.sentence) + '</em>”</p>' +
+      '<p class="hint">Say it once only. It must be repeated word for word.</p>' +
+      toggles([["Repeated exactly"]]));
+
+    html += section(8, "Following a three-step instruction", 3,
+      '<p class="say">Hand over a sheet of paper and say all of it in one go: “Take this paper in your ' + e.hand + ' hand, fold it in half, and ' + e.ending + '.”</p>' +
+      '<p class="hint">Don’t repeat the instruction or help along the way.</p>' +
+      toggles([["Takes it in " + e.hand + " hand"], ["Folds it in half"], [e.ending.charAt(0).toUpperCase() + e.ending.slice(1)]]));
+
+    html += section(9, "Reading and doing", 1,
+      '<p class="say">Show the card and say: “Please read this and do what it says.”</p>' +
+      '<p class="big-words">' + esc(e.card) + '</p>' +
+      '<div class="actions"><button class="ghost" data-show="card">Show large card</button></div>' +
+      toggles([["Does the action"]]));
+
+    html += section(10, "Writing a sentence", 1,
+      '<p class="say">“Please write any sentence you like on this paper.”</p>' +
+      '<p class="hint">It needs to make sense and have a subject and a verb. Spelling and grammar don’t count.</p>' +
+      toggles([["Sensible sentence written"]]));
+
+    html += section(11, "Copying a drawing", 1,
+      '<p class="say">Show the drawing and say: “Please copy this drawing as well as you can.”</p>' +
+      '<div class="shape-box">' + svgWrap(e.shape.svg()) + '</div>' +
+      '<div class="actions"><button class="ghost" data-show="shape">Show large drawing</button></div>' +
+      '<p class="hint">Give the point if both shapes are drawn with the right number of sides and they overlap. Shakiness and size don’t matter.</p>' +
+      toggles([["Copied correctly"]]));
+
+    document.getElementById("exam").innerHTML = html;
+    document.getElementById("examId").textContent = "Exam " + e.id;
+    document.getElementById("result").style.display = "none";
+    updateTotal();
+  }
+
+  // ---------- Scoring ----------
+  function updateTotal() {
+    var n = document.querySelectorAll('.pt[aria-pressed="true"]').length;
+    document.getElementById("total").innerHTML = n + ' <span>/ 30</span>';
+    return n;
+  }
+
+  function showResult() {
+    var n = updateTotal();
+    var band, text;
+    if (n >= 25) { band = "Usually within the normal range"; text = "Scores of 25 or more are generally considered normal for this kind of screen."; }
+    else if (n >= 21) { band = "Some difficulty"; text = "Scores of 21 to 24 can suggest mild difficulty with memory or thinking. Nerves, tiredness, hearing and eyesight can all pull a score down, so it’s worth trying again on another day."; }
+    else if (n >= 10) { band = "Noticeable difficulty"; text = "Scores in this range can suggest moderate difficulty. It would be a good idea to mention this to his GP before the driving medical."; }
+    else { band = "Significant difficulty"; text = "A score this low suggests it would be worth talking to his GP soon, separate from the driving medical."; }
+    var r = document.getElementById("result");
+    r.innerHTML = '<h2>' + n + ' out of 30: ' + band + '</h2><p>' + text + '</p>' +
+      '<p>This is a practice tool, not a diagnosis. Doctors adjust for age, schooling, language, hearing and eyesight, and use other information too.</p>';
+    r.style.display = "block";
+    r.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  }
+
+  // ---------- Overlay ----------
+  var overlay = document.getElementById("overlay");
+  var lastFocus = null;
+  function openOverlay(kind) {
+    var c = document.getElementById("overlayContent");
+    if (kind === "card") c.innerHTML = '<div class="card-text">' + esc(current.card) + '</div>';
+    else c.innerHTML = '<div class="card-shape">' + svgWrap(current.shape.svg()) + '</div>';
+    lastFocus = document.activeElement;
+    overlay.classList.add("open");
+    document.getElementById("closeOverlay").focus();
+  }
+  function closeOverlay() {
+    overlay.classList.remove("open");
+    if (lastFocus) lastFocus.focus();
+  }
+
+  // ---------- Events ----------
+  document.getElementById("exam").addEventListener("click", function (ev) {
+    var pt = ev.target.closest(".pt");
+    if (pt) {
+      pt.setAttribute("aria-pressed", pt.getAttribute("aria-pressed") === "true" ? "false" : "true");
+      updateTotal();
+      return;
+    }
+    var show = ev.target.closest("[data-show]");
+    if (show) openOverlay(show.getAttribute("data-show"));
+  });
+  document.getElementById("newExam").addEventListener("click", function () {
+    current = makeExam(); render(current); window.scrollTo(0, 0);
+  });
+  document.getElementById("reset").addEventListener("click", function () {
+    document.querySelectorAll(".pt").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+    document.getElementById("result").style.display = "none";
+    updateTotal();
+  });
+  document.getElementById("showResult").addEventListener("click", showResult);
+  document.getElementById("closeOverlay").addEventListener("click", closeOverlay);
+  overlay.addEventListener("click", function (ev) { if (ev.target === overlay) closeOverlay(); });
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && overlay.classList.contains("open")) closeOverlay(); });
+
+  current = makeExam();
+  render(current);
+})();
+</script>
+</body>
+</html>
